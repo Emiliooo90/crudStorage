@@ -13,5 +13,27 @@
     </ion-toolbar>
   </ion-header>
   <ion-input type="text" placeholder="Ingrese nombre" #nombre autofocus="true"></ion-input>
-  <ion-button (click)="onClick()" expand="block" fill="clear" shape="round">Guardar</ion-button>
+  <ion-button (click)="onClick(nombre)" expand="block" fill="clear" shape="round">Guardar</ion-button>
+
+  <br>
+  <br>
+  <ion-button (click)="listar()" expand="block" fill="clear" shape="round">
+    Listar
+  </ion-button>
+  <div *ngIf="listado.length > 0">
+    <ion-list>
+      <div *ngFor="let aux of listado">
+        <ion-item>
+          <ion-label>{{aux | uppercase}}</ion-label>
+        </ion-item>
+      </div>
+    </ion-list>
+  </div>
 </ion-content>
+<ion-footer class="ion-text-center">
+  <ion-toolbar>
+    <ion-button (click)="limpiar()" fill="clear">
+      <ion-icon slot="icon-only" name="trash"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>
