@@ -21,14 +21,27 @@
     <ion-input placeholder="Ej: +56960504020" #fono></ion-input>
   </ion-item>
 
+
   <div *ngIf="listado.length > 0">
     <ion-list>
       <div *ngFor="let aux of listado">
         <ion-item>
-          <ion-label>{{aux}}</ion-label>
+          <ion-label>{{aux[0].nombre}}</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>{{aux[0].fono}}</ion-label>
         </ion-item>
       </div>
     </ion-list>
+  </div>
+
+  <div *ngIf="nombreUsuario">
+    <ion-text color="primary">
+      <h1>{{nombreUsuario}}</h1>
+    </ion-text>
+    <ion-text color="primary">
+      <h1>{{fonoUsuario}}</h1>
+    </ion-text>
   </div>
 
 </ion-content>
@@ -39,6 +52,9 @@
     </ion-button>
     <ion-button (click)="buscar(rut)" fill="clear" slot="end">
       <ion-icon slot="icon-only" name="search"></ion-icon>
+    </ion-button>
+    <ion-button (click)="listar()" fill="clear">
+      <ion-icon slot="icon-only" name="list"></ion-icon>
     </ion-button>
   </ion-toolbar>
 </ion-footer>

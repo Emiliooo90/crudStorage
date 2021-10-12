@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
+import { Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -15,13 +16,20 @@ export class CrudService {
     await this.storage.create();
   }
 
-  async set(key:string, valor:string)
+  async set(key:string, valor:any)
   {
-    await this.storage.set(key, valor);
+    await this.storage.set(valor[0].rut, valor);
   }
 
   get(key:string)
   {
     return this.storage.get(key);
+  }
+
+  listar()
+  {
+    let fila = [];
+    this.storage.forEach((v, k) => {fila.push(v); });
+    return fila;
   }
 }

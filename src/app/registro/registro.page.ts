@@ -8,6 +8,8 @@ import { CrudService } from '../crud.service';
 })
 export class RegistroPage implements OnInit {
   listado = [];
+  nombreUsuario = "";
+  fonoUsuario = "";
 
   constructor(private crud: CrudService) { }
 
@@ -20,13 +22,24 @@ export class RegistroPage implements OnInit {
 
   agregar(rut: HTMLInputElement, nombre: HTMLInputElement, fono: HTMLInputElement)
   {
-    const datos = "{rut':'" + rut.value + "','nombre':'" + nombre.value + "','fono':'" + fono.value + "'}";
+    const datos = [{"rut": rut.value, "nombre": nombre.value, "fono": fono.value}];
     this.crud.set(rut.value, datos);
+    console.log(datos);
+    rut.value = "";
+    nombre.value = "";
+    fono.value = "";
   }
 
-  buscar(rut: HTMLInputElement)
+  async buscar(rut: HTMLInputElement)
   {
-    const x = this.crud.get(rut.value);
-    x.then(xx => this.listado.push(xx));
+    const valor = await this.crud.get(rut.value);
+    this.nombreUsuario = valor[0].nombre;
+    this.fonoUsuario = valor[0].fono;
+  }
+  
+  listar()
+  {
+    this.listado = this.crud.listar()
+
   }
 }
