@@ -32,4 +32,9 @@ export class CrudService {
     this.storage.forEach((v, k) => {fila.push(v); });
     return fila;
   }
+
+  eliminar(rut: string)
+  {
+    this.storage.remove(rut);
+  }
 }
