@@ -29,7 +29,7 @@ export class RegistroPage implements OnInit {
     const datos = [{"rut": rut.value, "nombre": nombre.value, "fono": fono.value}];
     const valor = await this.crud.get(rut.value);
 
-    if (valor.length > 0)
+    if (valor != null && valor.length > 0)
     {
       const alert = await this.alertController.create({
         cssClass: 'my-custom-class',
@@ -60,16 +60,46 @@ export class RegistroPage implements OnInit {
       rut.value = "";
       nombre.value = "";
       fono.value = "";
+      const toast = await this.toastController.create({
+        message: 'Los datos fueron guardados',
+        duration: 300,
+        color: "success",
+        position: 'middle'
+      });
+      toast.present();
     }
   }
 
   async buscar(rut: HTMLInputElement)
   {
-    const valor = await this.crud.get(rut.value);
-    this.nombreUsuario = valor[0].nombre;
-    this.fonoUsuario = valor[0].fono;
-    this.nombreUsuario = "";
-    this.fonoUsuario = "";
+    if (rut.value.trim().length == 0)
+    {
+      const toast = await this.toastController.create({
+        message: 'Debe especificar un rut válido',
+        duration: 3000,
+        color: "danger"
+      });
+      toast.present();
+    }
+    else
+    {
+      const valor = await this.crud.get(rut.value);
+
+      if (valor == null)
+      {
+        const toast = await this.toastController.create({
+          message: 'El rut no existe',
+          duration: 3000,
+          color: "danger"
+        });
+        toast.present();
+      }
+      this.nombreUsuario = valor[0].nombre;
+      this.fonoUsuario = valor[0].fono;
+      this.rutUsuario = rut.value;
+      this.listado = []
+      rut.value = "";
+    }
   }
   
   listar()
@@ -78,9 +108,9 @@ export class RegistroPage implements OnInit {
 
   }
 
-  async eliminar(rut: HTMLInputElement)
+  async eliminar()
   {
-    this.crud.eliminar(rut.value);
+    this.crud.eliminar(this.rutUsuario);
     const toast = await this.toastController.create({
       message: 'El usuario fue eliminado',
       duration: 2000,
