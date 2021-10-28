@@ -110,12 +110,28 @@ export class RegistroPage implements OnInit {
 
   async eliminar()
   {
-    this.crud.eliminar(this.rutUsuario);
-    const toast = await this.toastController.create({
-      message: 'El usuario fue eliminado',
-      duration: 2000,
-      color: "danger"
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Eliminar usuario',
+      message: '<strong>¿Estás seguro?</strong>',
+      buttons: [
+        {
+        text: 'No',
+        role: 'cancel'
+        }, {
+          text: 'Si',
+          handler: async () => {
+            this.crud.eliminar(this.rutUsuario);
+            const toast = await this.toastController.create({
+              message: 'El usuario fue elimiando',
+              duration: 3000,
+              color: "success"
+            });
+            toast.present();
+          }
+        }
+      ]
     });
-    toast.present();
+    await alert.present();
   }
 }
