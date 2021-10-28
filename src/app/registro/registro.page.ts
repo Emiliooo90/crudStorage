@@ -26,16 +26,47 @@ export class RegistroPage implements OnInit {
 
   async agregar(rut: HTMLInputElement, nombre: HTMLInputElement, fono: HTMLInputElement)
   {
-    const datos = [{"rut": rut.value, "nombre": nombre.value, "fono": fono.value}];
-    const valor = await this.crud.get(rut.value);
-
-    if (valor != null && valor.length > 0)
+    if (rut.value.trim().length == 0)
     {
-      const alert = await this.alertController.create({
-        cssClass: 'my-custom-class',
-        header: 'El rut ya existe, ¿Desea cambiar los datos?',
-        message: '<strong>¿Estás seguro?</strong>',
-        buttons: [
+      const toast = await this.toastController.create({
+        message: 'Debe ingresar un rut',
+        duration: 3000,
+        color: "danger"
+      });
+      toast.present();
+    }
+
+    else if (nombre.value.trim().length == 0)
+    {
+      const toast = await this.toastController.create({
+        message: 'Debe ingresar un nombre',
+        duration: 3000,
+        color: "danger"
+      });
+      toast.present();
+    }
+
+    else if (fono.value.trim().length == 0)
+    {
+      const toast = await this.toastController.create({
+        message: 'Debe ingresar un numero de telefono',
+        duration: 3000,
+        color: "danger"
+      });
+      toast.present();
+    }
+    else
+    {
+      const datos = [{"rut": rut.value, "nombre": nombre.value, "fono": fono.value}];
+      const valor = await this.crud.get(rut.value);
+
+      if (valor != null && valor.length > 0)
+      {
+        const alert = await this.alertController.create({
+          cssClass: 'my-custom-class',
+          header: 'El rut ya existe, ¿Desea cambiar los datos?',
+          message: '<strong>¿Estás seguro?</strong>',
+          buttons: [
           {
             text: 'No',
             role: 'cancel'
@@ -52,22 +83,24 @@ export class RegistroPage implements OnInit {
         ]
       });
       await alert.present();
-    }
-    else
-    {
-      this.crud.set(rut.value, datos);
-      console.log(datos)
-      rut.value = "";
-      nombre.value = "";
-      fono.value = "";
-      const toast = await this.toastController.create({
-        message: 'Los datos fueron guardados',
-        duration: 300,
-        color: "success",
-        position: 'middle'
-      });
+      }
+      else
+      {
+        this.crud.set(rut.value, datos);
+        console.log(datos)
+        rut.value = "";
+        nombre.value = "";
+        fono.value = "";
+        const toast = await this.toastController.create({
+          message: 'Los datos fueron guardados',
+          duration: 300,
+          color: "success",
+          position: 'middle'
+        });
       toast.present();
+      }
     }
+    
   }
 
   async buscar(rut: HTMLInputElement)
@@ -123,15 +156,27 @@ export class RegistroPage implements OnInit {
           handler: async () => {
             this.crud.eliminar(this.rutUsuario);
             const toast = await this.toastController.create({
-              message: 'El usuario fue elimiando',
+              message: 'El usuario fue eliminado',
               duration: 3000,
               color: "success"
             });
             toast.present();
+            this.nombreUsuario = "";
           }
         }
       ]
     });
     await alert.present();
+  }
+
+  limpiar(rut: HTMLInputElement, nombre: HTMLInputElement, fono: HTMLInputElement)
+  {
+    this.listado = []
+    this.rutUsuario = "";
+    this.nombreUsuario = "";
+    this.fonoUsuario = "";
+    rut.value = "";
+    nombre.value = "";
+    fono.value = "";
   }
 }
