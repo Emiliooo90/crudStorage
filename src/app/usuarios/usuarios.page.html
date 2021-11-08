@@ -7,9 +7,10 @@
 <ion-content>
   <div *ngIf="listado.length > 0">
     <ion-list>
-      <div *ngFor="let aux of listado">
+      <div *ngFor="let aux of listado" [routerLink]="['/', aux.id]">
         <ion-item>
           <ion-label>{{aux.name}}</ion-label>
+          <ion-label>{{aux.username}}</ion-label>
         </ion-item>
       </div>
     </ion-list>

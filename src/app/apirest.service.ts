@@ -6,12 +6,13 @@ import { HttpClient } from '@angular/common/http';
 })
 export class ApirestService {
   listado = []
-  private apiUrl = 'https://jsonplaceholder.typicode.com/';
+  datos: any
+  private apiURL = 'https://jsonplaceholder.typicode.com/';
   constructor(private http: HttpClient) { }
 
   getUsers()
   {
-    let url = this.apiUrl + 'users';
+    let url = this.apiURL + 'users';
     return new Promise((resolve, reject) =>
     {
       this.http.get(url).subscribe((data : []) =>
@@ -21,6 +22,21 @@ export class ApirestService {
       },
       error => { console.log("error en la solicitud")}
       )
+    })
+  }
+
+  getUser(id: String)
+  {
+    let url = this.apiURL + 'users/' + id;
+    return new Promise((resolve, reject) => 
+    {
+      this.http.get(url).subscribe((data : any) => 
+      {
+        this.datos = data;
+        console.log(this.datos);
+      },
+      error => { console.log("error en la solicitud")
+      })
     })
   }
 }
